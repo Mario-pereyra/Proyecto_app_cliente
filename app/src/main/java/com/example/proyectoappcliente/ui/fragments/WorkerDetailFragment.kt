@@ -60,8 +60,10 @@ class WorkerDetailFragment : Fragment() {
             binding.txtWorkerStats.text = "${worker.averageRating}% Calificación - ${worker.reviewsCount} trabajos"
             binding.txtWorkerSpecialties.text = worker.specialties.joinToString(", ")
 
+            // --- LÓGICA CORREGIDA ---
+            val imageUrl = worker.pictureUrl
             Glide.with(this)
-                .load(worker.pictureUrl)
+                .load(if (imageUrl == "null") null else imageUrl)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.ic_launcher_background)
                 .into(binding.imgWorkerProfile)

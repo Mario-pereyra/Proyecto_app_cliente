@@ -35,8 +35,10 @@ class TrabajadorAdapter(
             binding.txtWorkerName.text = fullName
             binding.txtWorkerRating.text = "${trabajador.averageRating}% - ${trabajador.reviewsCount} trabajos"
 
+            // Lógica corregida para evitar FileNotFoundException con "null"
+            val imageUrl = trabajador.pictureUrl
             Glide.with(itemView.context)
-                .load(trabajador.pictureUrl)
+                .load(if (imageUrl == "null") null else imageUrl)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher_round)
                 .into(binding.imgWorker)
@@ -45,4 +47,3 @@ class TrabajadorAdapter(
         }
     }
 }
-
