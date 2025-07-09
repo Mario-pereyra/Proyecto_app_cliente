@@ -56,20 +56,35 @@ data class MensajeChat(
     @SerializedName("created_at") val createdAt: String
 )
 
+// Modelo para el usuario que hace la reseña
+data class ReviewUser(
+    val id: Int,
+    val name: String,
+    @SerializedName("last_name") val lastName: String,
+    val type: Int
+)
+
+// Modelo corregido para una reseña
 data class Resena(
-    val rating: Float,
-    val comment: String,
-    val author: String
+    val id: Int,
+    @SerializedName("worker_id") val workerId: Int,
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("appointment_id") val appointmentId: Int,
+    val rating: Int,
+    val comment: String?, // El comentario puede ser nulo
+    @SerializedName("is_done") val isDone: Int,
+    val user: ReviewUser // Información del usuario que hizo la reseña
 )
 
 data class TrabajadorDetalle(
     val id: Int,
-    val user: User,
+    @SerializedName("user_id") val userId: Int,
     @SerializedName("picture_url") val pictureUrl: String?,
-    @SerializedName("average_rating") val averageRating: Float,
+    @SerializedName("average_rating") val averageRating: String, // La API lo manda como String
     @SerializedName("reviews_count") val reviewsCount: Int,
-    val specialties: List<String>,
-    val reviews: List<Resena>
+    val user: User, // Reutilizamos la clase User que ya tenemos
+    val categories: List<Categoria>, // Ahora es una lista de objetos Categoria
+    val reviews: List<Resena> // Usa la nueva clase Resena
 )
 
 data class RegisterResponse(

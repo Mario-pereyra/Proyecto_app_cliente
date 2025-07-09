@@ -57,8 +57,13 @@ class WorkerDetailFragment : Fragment() {
         viewModel.workerDetails.observe(viewLifecycleOwner) { worker ->
             val fullName = "${worker.user.name} ${worker.user.lastName}"
             binding.txtWorkerName.text = fullName
-            binding.txtWorkerStats.text = "${worker.averageRating}% Calificación - ${worker.reviewsCount} trabajos"
-            binding.txtWorkerSpecialties.text = worker.specialties.joinToString(", ")
+
+            // Convertimos el rating de String a Float para mostrarlo
+            val rating = worker.averageRating.toFloatOrNull() ?: 0.0f
+            binding.txtWorkerStats.text = "${rating}% Calificación - ${worker.reviewsCount} trabajos"
+
+            // Unimos los nombres de las categorías en un solo string
+            binding.txtWorkerSpecialties.text = worker.categories.joinToString(", ") { it.name }
 
             // --- LÓGICA CORREGIDA ---
             val imageUrl = worker.pictureUrl

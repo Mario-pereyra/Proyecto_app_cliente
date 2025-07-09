@@ -28,9 +28,12 @@ class ResenaAdapter(
 
     inner class ResenaViewHolder(private val binding: ReviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(resena: Resena) {
-            binding.txtReviewAuthor.text = resena.author
-            binding.txtReviewComment.text = resena.comment
+            // Mostramos el nombre completo del usuario que hizo la reseña
+            val reviewerName = "${resena.user.name} ${resena.user.lastName}"
+            binding.txtReviewAuthor.text = reviewerName
+
+            // Mostramos el comentario o un mensaje por defecto si es nulo
+            binding.txtReviewComment.text = resena.comment ?: "Sin comentario adicional"
         }
     }
 }
-
