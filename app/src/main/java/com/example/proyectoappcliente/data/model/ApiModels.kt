@@ -85,3 +85,8 @@ data class Profile(
     @SerializedName("last_name") val lastName: String,
     val type: Int
 )
+
+data class ErrorResponse(
+    val message: String,
+    val errors: Map<String, List<String>>
+)
