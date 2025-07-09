@@ -14,7 +14,7 @@ interface ApiClient {
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
     @POST("client/register")
-    suspend fun register(@Body registerRequest: RegisterRequest): Response<Unit> // No esperamos cuerpo en la respuesta
+    suspend fun register(@Body registerRequest: RegisterRequest): Response<RegisterResponse> // Ahora esperamos el cuerpo de la respuesta
 
     // --- Categorías ---
     @GET("categories")

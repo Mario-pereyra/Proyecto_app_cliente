@@ -71,3 +71,17 @@ data class TrabajadorDetalle(
     val specialties: List<String>,
     val reviews: List<Resena>
 )
+
+data class RegisterResponse(
+    val id: Int,
+    val name: String,
+    val email: String,
+    val profile: Profile
+)
+
+data class Profile(
+    val id: Int,
+    val name: String,
+    @SerializedName("last_name") val lastName: String,
+    val type: Int
+)
