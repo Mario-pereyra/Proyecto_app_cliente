@@ -31,7 +31,10 @@ class TrabajadorAdapter(
 
     inner class TrabajadorViewHolder(private val binding: WorkerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(trabajador: Trabajador) {
-            val fullName = "${trabajador.user.name} ${trabajador.user.lastName}"
+            // Filtro para apellido: si es null, usar "trabajador"
+            val displayLastName = trabajador.user.lastName ?: "trabajador"
+            val fullName = "${trabajador.user.name} $displayLastName"
+
             binding.txtWorkerName.text = fullName
             binding.txtWorkerRating.text = "${trabajador.averageRating}% - ${trabajador.reviewsCount} trabajos"
 
