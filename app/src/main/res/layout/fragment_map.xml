@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Seleccione la ubicación" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- FrameLayout para superponer el marcador sobre el mapa -->
@@ -45,7 +46,7 @@
             android:id="@+id/btn_confirm_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
+            android:layout_gravity="bottom|start"
             android:layout_margin="16dp"
             android:src="@drawable/ic_check_24"
             android:contentDescription="Confirmar ubicación"
