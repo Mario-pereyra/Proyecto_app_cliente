@@ -60,7 +60,7 @@ class WorkerDetailFragment : Fragment() {
 
             // Convertimos el rating de String a Float para mostrarlo
             val rating = worker.averageRating.toFloatOrNull() ?: 0.0f
-            binding.txtWorkerStats.text = "${rating}% Calificación - ${worker.reviewsCount} trabajos"
+            binding.txtWorkerStats.text = "${rating}⭐ Calificación - ${worker.reviewsCount} trabajos"
 
             // Unimos los nombres de las categorías en un solo string
             binding.txtWorkerSpecialties.text = worker.categories.joinToString(", ") { it.name }
