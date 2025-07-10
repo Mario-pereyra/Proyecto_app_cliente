@@ -51,5 +51,8 @@ class WorkerDetailViewModel(private val repository: AppRepository) : ViewModel()
             }
         }
     }
-}
 
+    fun clearNewAppointment() {
+        _newAppointment.value = null
+    }
+}

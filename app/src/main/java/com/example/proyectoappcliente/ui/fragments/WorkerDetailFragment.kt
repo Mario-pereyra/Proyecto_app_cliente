@@ -77,9 +77,14 @@ class WorkerDetailFragment : Fragment() {
         }
 
         viewModel.newAppointment.observe(viewLifecycleOwner) { cita ->
-            // Navegar al chat con el ID de la nueva cita
-            val action = WorkerDetailFragmentDirections.actionWorkerDetailFragmentToChatFragment(cita.id)
-            findNavController().navigate(action)
+            if (cita != null) {
+                // Imprimir el ID de la cita en Logcat
+                android.util.Log.d("WorkerDetailFragment", "Navegando al chat de la cita con id: ${cita.id}")
+                // Navegar al chat con el ID de la nueva cita
+                val action = WorkerDetailFragmentDirections.actionWorkerDetailFragmentToChatFragment(cita.id)
+                findNavController().navigate(action)
+                viewModel.clearNewAppointment() // Limpiar el estado para evitar loops
+            }
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner) {
