@@ -31,8 +31,8 @@ data class CrearCitaRequest(
 data class ConcretarCitaRequest(
     @SerializedName("appointment_date") val appointmentDate: String,
     @SerializedName("appointment_time") val appointmentTime: String,
-    val latitude: Double,
-    val longitude: Double
+    val latitude: String,  // Cambiado de Double a String
+    val longitude: String  // Cambiado de Double a String
 )
 
 // Petición para /appointments/{id}/review

@@ -58,9 +58,19 @@ class DateTimePickerFragment : Fragment() {
                 val request = ConcretarCitaRequest(
                     appointmentDate = selectedDate!!,
                     appointmentTime = selectedTime!!,
-                    latitude = args.latitude.toDouble(),
-                    longitude = args.longitude.toDouble()
+                    latitude = args.latitude.toString(), // Convertir Float a String
+                    longitude = args.longitude.toString() // Convertir Float a String
                 )
+
+                // LOG: Información que se va a enviar
+                android.util.Log.d("DateTimePickerFragment", "=== CONCRETAR CITA ===")
+                android.util.Log.d("DateTimePickerFragment", "Appointment ID: ${args.appointmentId}")
+                android.util.Log.d("DateTimePickerFragment", "Fecha seleccionada: ${selectedDate}")
+                android.util.Log.d("DateTimePickerFragment", "Hora seleccionada: ${selectedTime}")
+                android.util.Log.d("DateTimePickerFragment", "Latitud: ${args.latitude}")
+                android.util.Log.d("DateTimePickerFragment", "Longitud: ${args.longitude}")
+                android.util.Log.d("DateTimePickerFragment", "Request completo: $request")
+
                 viewModel.makeAppointment(args.appointmentId, request)
             } else {
                 Toast.makeText(context, "Por favor, seleccione fecha y hora", Toast.LENGTH_SHORT).show()
@@ -106,7 +116,7 @@ class DateTimePickerFragment : Fragment() {
                 val selectedCalendar = Calendar.getInstance()
                 selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 selectedCalendar.set(Calendar.MINUTE, minute)
-                val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault()) // Cambiar formato sin segundos
                 selectedTime = timeFormat.format(selectedCalendar.time)
                 binding.txtSelectedTime.text = "Hora: $selectedTime"
             },
@@ -122,4 +132,3 @@ class DateTimePickerFragment : Fragment() {
         _binding = null
     }
 }
-
