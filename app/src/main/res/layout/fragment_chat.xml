@@ -17,9 +17,42 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+            android:layout_height="?attr/actionBarSize"
+            app:title="Chat" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Sección personalizada para foto y nombre del trabajador -->
+    <LinearLayout
+        android:id="@+id/workerInfoLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/design_default_color_surface"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imgWorkerPhoto"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginEnd="12dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/txtWorkerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Nombre del Trabajador" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnCalificar"
@@ -28,7 +61,7 @@
         android:text="Calificar Trabajo"
         android:visibility="gone"
         tools:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintTop_toBottomOf="@id/workerInfoLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="8dp"/>
@@ -58,23 +91,31 @@
             android:id="@+id/editTxtMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:hint="Enviar Mensaje"
-            android:inputType="text" />
+            android:background="@drawable/edittext_background"
+            android:hint="Escribe un mensaje..."
+            android:padding="12dp" />
 
         <ImageButton
             android:id="@+id/btnConcretar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_agenda"
-            android:contentDescription="Concretar Cita"/>
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Concretar cita"
+            android:src="@drawable/ic_briefcase"
+            android:tint="#673AB7" />
 
         <ImageButton
             android:id="@+id/btnSendMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_send"
-            android:contentDescription="Enviar Mensaje"/>
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:backgroundTint="#050505"
+            android:contentDescription="Enviar mensaje"
+            android:src="@drawable/ic_send"
+            android:tint="#673AB7" />
 
     </LinearLayout>
 

@@ -64,4 +64,3 @@ class AppointmentsFragment : Fragment() {
         _binding = null
     }
 }
-

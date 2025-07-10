@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.proyectoappcliente.data.model.Cita
 import com.example.proyectoappcliente.data.model.MensajeChat
 import com.example.proyectoappcliente.data.model.MensajeChatRequest
+import com.example.proyectoappcliente.data.model.TrabajadorDetalle
 import com.example.proyectoappcliente.repositories.AppRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -22,6 +23,9 @@ class ChatViewModel(private val repository: AppRepository) : ViewModel() {
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
+
+    private val _workerDetails = MutableLiveData<TrabajadorDetalle>()
+    val workerDetails: LiveData<TrabajadorDetalle> = _workerDetails
 
     private var pollingJob: Job? = null
 
@@ -53,13 +57,18 @@ class ChatViewModel(private val repository: AppRepository) : ViewModel() {
     private fun fetchMessages(appointmentId: Int) {
         viewModelScope.launch {
             try {
+                android.util.Log.d("ChatViewModel", "Intentando obtener mensajes para cita ID: $appointmentId")
                 val response = repository.getChatMessages(appointmentId)
                 if (response.isSuccessful) {
-                    _messages.value = response.body()
+                    val messages = response.body()
+                    android.util.Log.d("ChatViewModel", "Mensajes obtenidos: ${messages?.size ?: 0}")
+                    _messages.value = messages
                 } else {
+                    android.util.Log.e("ChatViewModel", "Error en respuesta: ${response.code()} - ${response.message()}")
                     _errorMessage.value = "Error al cargar mensajes."
                 }
             } catch (e: Exception) {
+                android.util.Log.e("ChatViewModel", "Excepción al obtener mensajes: ${e.message}")
                 _errorMessage.value = "Error de conexión."
             }
         }
@@ -67,16 +76,54 @@ class ChatViewModel(private val repository: AppRepository) : ViewModel() {
 
     fun sendMessage(appointmentId: Int, messageText: String, receiverId: Int) {
         viewModelScope.launch {
+            android.util.Log.d("ChatViewModel", "=== INICIANDO ENVÍO DE MENSAJE ===")
+            android.util.Log.d("ChatViewModel", "Appointment ID: $appointmentId")
+            android.util.Log.d("ChatViewModel", "Mensaje: '$messageText'")
+            android.util.Log.d("ChatViewModel", "Receiver ID: $receiverId")
+
             val request = MensajeChatRequest(messageText, receiverId)
+            android.util.Log.d("ChatViewModel", "Request creado: message='${request.message}', receiver_id=${request.receiverId}")
+
             try {
+                android.util.Log.d("ChatViewModel", "Llamando a repository.sendChatMessage...")
                 val response = repository.sendChatMessage(appointmentId, request)
+                android.util.Log.d("ChatViewModel", "Respuesta recibida - Código: ${response.code()}")
+                android.util.Log.d("ChatViewModel", "Respuesta exitosa: ${response.isSuccessful}")
+
                 if (response.isSuccessful) {
+                    android.util.Log.d("ChatViewModel", "✅ Mensaje enviado exitosamente")
+                    android.util.Log.d("ChatViewModel", "Refrescando mensajes...")
                     // Refresca los mensajes inmediatamente después de enviar
                     fetchMessages(appointmentId)
                 } else {
+                    android.util.Log.e("ChatViewModel", "❌ Error al enviar mensaje - Código: ${response.code()}")
+                    android.util.Log.e("ChatViewModel", "Error body: ${response.errorBody()?.string()}")
                     _errorMessage.value = "No se pudo enviar el mensaje."
                 }
             } catch (e: Exception) {
+                android.util.Log.e("ChatViewModel", "❌ Excepción al enviar mensaje: ${e.message}")
+                android.util.Log.e("ChatViewModel", "Stack trace: ${e.stackTrace.contentToString()}")
+                _errorMessage.value = "Error de conexión."
+            }
+            android.util.Log.d("ChatViewModel", "=== FIN ENVÍO DE MENSAJE ===")
+        }
+    }
+
+    fun fetchWorkerDetails(workerId: Int) {
+        viewModelScope.launch {
+            try {
+                android.util.Log.d("ChatViewModel", "Intentando obtener detalles del trabajador ID: $workerId")
+                val response = repository.getWorkerDetail(workerId)
+                if (response.isSuccessful && response.body() != null) {
+                    val worker = response.body()!!
+                    android.util.Log.d("ChatViewModel", "Trabajador obtenido: ${worker.user.name} ${worker.user.lastName}")
+                    _workerDetails.value = worker
+                } else {
+                    android.util.Log.e("ChatViewModel", "Error obteniendo trabajador: ${response.code()} - ${response.message()}")
+                    _errorMessage.value = "Error al obtener detalles del trabajador."
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("ChatViewModel", "Excepción obteniendo trabajador: ${e.message}")
                 _errorMessage.value = "Error de conexión."
             }
         }
@@ -87,4 +134,3 @@ class ChatViewModel(private val repository: AppRepository) : ViewModel() {
         pollingJob?.cancel() // Detiene el sondeo cuando el ViewModel se destruye
     }
 }
-

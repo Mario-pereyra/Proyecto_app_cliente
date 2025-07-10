@@ -50,10 +50,34 @@ data class MensajeChatRequest(
 // Modelo para un mensaje individual en la respuesta de /appointments/{id}/chats
 data class MensajeChat(
     val id: Int,
-    val message: String,
+    @SerializedName("appointment_id") val appointmentId: Int,
     @SerializedName("sender_id") val senderId: Int,
     @SerializedName("receiver_id") val receiverId: Int,
-    @SerializedName("created_at") val createdAt: String
+    @SerializedName("date_sent") val dateSent: String,
+    val message: String,
+    val appointment: AppointmentInfo,
+    val sender: ChatUser,
+    val receiver: ChatUser
+)
+
+// Modelo para la información del appointment dentro del mensaje
+data class AppointmentInfo(
+    val id: Int,
+    @SerializedName("worker_id") val workerId: Int,
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("appointment_date") val appointmentDate: String?,
+    @SerializedName("appointment_time") val appointmentTime: String?,
+    @SerializedName("category_selected_id") val categorySelectedId: Int,
+    val latitude: Double?,
+    val longitude: Double?,
+    val status: Int
+)
+
+// Modelo para usuarios en el chat (sender/receiver)
+data class ChatUser(
+    val id: Int,
+    val name: String,
+    val email: String
 )
 
 // Modelo para el usuario que hace la reseña

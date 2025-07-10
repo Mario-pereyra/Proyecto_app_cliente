@@ -80,9 +80,11 @@ class WorkerDetailFragment : Fragment() {
             if (cita != null) {
                 // Imprimir el ID de la cita en Logcat
                 android.util.Log.d("WorkerDetailFragment", "Navegando al chat de la cita con id: ${cita.id}")
-                // Navegar al chat con el ID de la nueva cita
+
+                // Navegación simplificada - solo necesita el appointmentId
                 val action = WorkerDetailFragmentDirections.actionWorkerDetailFragmentToChatFragment(cita.id)
                 findNavController().navigate(action)
+
                 viewModel.clearNewAppointment() // Limpiar el estado para evitar loops
             }
         }
