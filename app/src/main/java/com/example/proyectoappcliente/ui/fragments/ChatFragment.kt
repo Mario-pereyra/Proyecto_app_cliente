@@ -189,30 +189,35 @@ class ChatFragment : Fragment() {
             if (message.isNotEmpty()) {
                 android.util.Log.d("ChatFragment", "Mensaje no está vacío, intentando enviar...")
 
-                // El receiver_id siempre es el workerId ya que esta es la app del cliente
+                // El receiver_id debe ser el user_id del trabajador, no el worker_id
                 var receiverId: Int? = null
 
-                // Intentar obtener workerId desde los mensajes existentes primero
+                // Intentar obtener el user_id del trabajador desde los mensajes existentes primero
                 val messages = viewModel.messages.value
                 if (!messages.isNullOrEmpty()) {
-                    receiverId = messages.first().appointment.workerId
-                    android.util.Log.d("ChatFragment", "Worker ID obtenido desde mensajes: $receiverId")
-                } else {
-                    // Si no hay mensajes, usar appointmentDetails
+                    // Obtener el user_id del trabajador desde la información de la cita en el mensaje
+                    val appointmentInfo = messages.first().appointment
                     val appointmentDetails = viewModel.appointmentDetails.value
                     if (appointmentDetails != null) {
-                        receiverId = appointmentDetails.workerId
-                        android.util.Log.d("ChatFragment", "Worker ID obtenido desde appointmentDetails: $receiverId")
+                        receiverId = appointmentDetails.worker.userId
+                        android.util.Log.d("ChatFragment", "User ID del trabajador obtenido desde appointmentDetails: $receiverId")
+                    }
+                } else {
+                    // Si no hay mensajes, usar appointmentDetails directamente
+                    val appointmentDetails = viewModel.appointmentDetails.value
+                    if (appointmentDetails != null) {
+                        receiverId = appointmentDetails.worker.userId
+                        android.util.Log.d("ChatFragment", "User ID del trabajador obtenido desde appointmentDetails: $receiverId")
                     }
                 }
 
                 if (receiverId != null) {
-                    android.util.Log.d("ChatFragment", "Enviando mensaje: '$message' al trabajador: $receiverId")
+                    android.util.Log.d("ChatFragment", "Enviando mensaje: '$message' al user_id del trabajador: $receiverId")
                     viewModel.sendMessage(args.appointmentId, message, receiverId)
                     binding.editTxtMessage.text.clear()
                     android.util.Log.d("ChatFragment", "Campo de texto limpiado")
                 } else {
-                    android.util.Log.e("ChatFragment", "ERROR: No se pudo determinar el workerId")
+                    android.util.Log.e("ChatFragment", "ERROR: No se pudo determinar el user_id del trabajador")
                     Toast.makeText(context, "Error: No se puede enviar el mensaje", Toast.LENGTH_SHORT).show()
                 }
             } else {
